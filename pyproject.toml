@@ -1,0 +1,15 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "maritime_urban_tracking"
+version = "0.0.1"
+dependencies = [
+    "numpy==1.26.1",
+    "matplotlib==3.9.2",
+    "open3d==0.16.0",
+    "pymap3d==3.0.1",
+    "scikit-image==0.25.2",
+    "torch==2.7.0"
+]
