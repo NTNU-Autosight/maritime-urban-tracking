@@ -18,8 +18,16 @@ If you do not have OpenCV installed and you use python, you can install the CPU-
 We have tested this repository using Python 3.10. 
 
 ## Download the dataset
-The dataset can be found here: [link](https://doi.org/10.11582/2025.l0rcnf5k). 
-Click on ``Data Access/Table Of Contents`` and click on the ``.tar.gz``-file to download it. After downloading, extract the contents, e.g., run ``tar -xzvf Maritime-Urban-Tracking.tar.gz``. Note that you need to store both the compressed file and the resulting folder with all files, which is less than 1.6TB of data. 
+The dataset can be found here: [link](https://doi.org/10.11582/2025.l0rcnf5k). Note that you need to store both the compressed file and the resulting folder with all files, which is less than 1.6TB of data. 
+
+### Option 1: Download via web browser
+1. Go to the dataset website linked above.
+1. Click on ``Data Access/Table Of Contents`` and click on the ``.tar.gz``-file to download it. 
+1. After downloading, extract the contents, e.g., run ``tar -xzvf Maritime-Urban-Tracking.tar.gz``. 
+
+### Option 2: Use wget
+1. Download: ``wget https://data.archive.sigma2.no/dataset/6723ebbe-2505-4321-b94d-8a4e482cd6bb/download/Maritime-Urban-Tracking.tar.gz``
+1. Extract: ``tar -xzvf Maritime-Urban-Tracking.tar.gz``
 
 ## Installation
 1. Download the repository. 
