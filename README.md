@@ -1,8 +1,6 @@
 # Maritime Urban Tracking
 
-**IMPORTANT NOTE**: This is an archived version of the code. An up-to-date version will be placed on GitHub: [link](https://github.com/NTNU-Autosight/maritime-urban-tracking). 
-
-This repository implements code to use the Maritime Urban Tracking (MUT) dataset. The dataset can be found at NIRD: [link](https://archive.sigma2.no/). A specific link will be added when the dataset is published in the up-to-date repository. The paper for the dataset will be found [below](#citations). 
+This repository implements code to use the Maritime Urban Tracking (MUT) dataset. The dataset can be found at NIRD: [link](https://doi.org/10.11582/2025.l0rcnf5k). The paper for the dataset will be found [below](#citations). 
 
 Here is a gif of some of the data from the dataset, made using this library and a recording tool. 
 The red dots are the LiDAR points and the othe colored points are from the short baseline stereo camera. 
@@ -19,6 +17,10 @@ If you do not have OpenCV installed and you use python, you can install the CPU-
 
 We have tested this repository using Python 3.10. 
 
+## Download the dataset
+The dataset can be found here: [link](https://doi.org/10.11582/2025.l0rcnf5k). 
+Click on ``Data Access/Table Of Contents`` and click on the ``.tar.gz``-file to download it. After downloading, extract the contents, e.g., run ``tar -xzvf Maritime-Urban-Tracking.tar.gz``. Note that you need to store both the compressed file and the resulting folder with all files, which is less than 1.6TB of data. 
+
 ## Installation
 1. Download the repository. 
 1. Consider using a venv like ``python3 -m venv venv`` and source it, ``source venv/bin/activate``. 
@@ -30,11 +32,9 @@ We have tested this repository using Python 3.10.
 1. Then change to the correct dataset location in [this file](src/maritime_urban_tracking/sequences.py#L6)
 
 ## Usage
-
 Once the the installation is done, the code can be used as a regular python library. You may run the examples, like [this one](examples/play_all_together.py), or use it in your own code similarly to how it is done in the examples: ``from maritime_urban_tracking.lidar import Lidar``. 
 
 If you want to use tha dataset, but not in python, you may use the code in this repository as a specification of how to read the files. It would be nice if you then also make that interface available to others and make an issue in this repository so that we can link to it. 
 
 ## Citations
-
-If you find the dataset useful in your research, please cite our paper. A suggestion of how to cite it will be given in the up-to-date repository. 
+If you find the dataset useful in your research, please cite our paper. We will add a suggestion of how to cite the paper here once it is published. 
