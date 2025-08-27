@@ -13,7 +13,7 @@ Here is a gif where there is a moving target. The big green dots are the estimat
 ## Pre-requisites
 We assume that OpenCV is installed. Since we will allow for the CUDA-installation, we will not write opencv-python as a requirement. Copy your local cv2 installtion into the venv if you are using this. You might find it here: ``/usr/lib/python3.10/dist-packages/cv2`` and place it under ``venv/lib/python3.10/site-packages``. 
 
-If you do not have OpenCV installed and you use python, you can install the CPU-version by ``pip install opencv-python``. 
+If you do not have OpenCV installed and you use python, you can install the CPU-version by ``pip install opencv-python==4.11.0.86``. 
 
 We have tested this repository using Python 3.10. 
 
