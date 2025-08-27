@@ -37,7 +37,7 @@ The dataset can be found here: [link](https://doi.org/10.11582/2025.l0rcnf5k). N
     pip install -e .
     ```
 1. Ensure that OpenCV is installed, see pre-requisite above. 
-1. Then change to the correct dataset location in [this file](src/maritime_urban_tracking/sequences.py#L6)
+1. Then change the `DATASET_FOLDER` variable in [this file](src/maritime_urban_tracking/sequences.py#L6) to the correct absolute path. 
 
 ## Usage
 Once the the installation is done, the code can be used as a regular python library. You may run the examples, like [this one](examples/play_all_together.py), or use it in your own code similarly to how it is done in the examples: ``from maritime_urban_tracking.lidar import Lidar``. 
