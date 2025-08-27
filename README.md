@@ -42,6 +42,12 @@ The dataset can be found here: [link](https://doi.org/10.11582/2025.l0rcnf5k). N
 ## Usage
 Once the the installation is done, the code can be used as a regular python library. You may run the examples, like [this one](examples/play_all_together.py), or use it in your own code similarly to how it is done in the examples: ``from maritime_urban_tracking.lidar import Lidar``. 
 
+Example:
+```
+python3 examples/play_all_together.py
+```
+or run the debugger in vscode. 
+
 If you want to use tha dataset, but not in python, you may use the code in this repository as a specification of how to read the files. It would be nice if you then also make that interface available to others and make an issue in this repository so that we can link to it. 
 
 ## Citations
