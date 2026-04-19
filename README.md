@@ -1,6 +1,6 @@
 # Maritime Urban Tracking
 
-This repository implements code to use the Maritime Urban Tracking (MUT) dataset. The dataset can be found at NIRD: [link](https://doi.org/10.11582/2025.l0rcnf5k). The paper for the dataset will be found [below](#citations). 
+This repository implements code to use the Maritime Urban Tracking (MUT) dataset. The dataset can be found at NIRD: [link](https://doi.org/10.11582/2025.l0rcnf5k), or the single maneuver 1 scenario [link](https://doi.org/10.11582/2026.dfc5yksv). The paper for the dataset will be found [below](#citations). 
 
 Here is a gif of some of the data from the dataset, made using this library and a recording tool. 
 The red dots are the LiDAR points and the othe colored points are from the short baseline stereo camera. 
@@ -20,14 +20,22 @@ We have tested this repository using Python 3.10.
 ## Download the dataset
 The dataset can be found here: [link](https://doi.org/10.11582/2025.l0rcnf5k). Note that you need to store both the compressed file and the resulting folder with all files, which is less than 1.6TB of data. 
 
-### Option 1: Download via web browser
+We have also published a single one of the scenarios (Maneuver 1) here: [link](https://doi.org/10.11582/2026.dfc5yksv). This one is about 16GB. 
+
+### Option 1: Use wget for the single scenario dataset (16GB)
+1. Download: ``wget https://data.archive.sigma2.no/dataset/d3c38c16-e692-42d8-b785-68654a0d5439/download/Maritime%20Urban%20Tracking%20Maneuver%201.tar.gz``
+1. Check hash: ``md5sum Maritime\ Urban\ Tracking\ Maneuver\ 1.tar.gz``. This should return ``355511bb15c57a20fc6b4fbc6c310ff0``
+1. Extract: ``tar -xzvf Maritime\ Urban\ Tracking\ Maneuver\ 1.tar.gz``
+
+### Option 2: Use wget for the full dataset (800GB)
+1. Download: ``wget https://data.archive.sigma2.no/dataset/6723ebbe-2505-4321-b94d-8a4e482cd6bb/download/Maritime-Urban-Tracking.tar.gz``
+1. Check hash: ``md5sum Maritime-Urban-Tracking.tar.gz``. This should return ``90546e78aeee116ad3630bb95e442a5d``
+1. Extract: ``tar -xzvf Maritime-Urban-Tracking.tar.gz``
+
+### Option 3: Download via web browser
 1. Go to the dataset website linked above.
 1. Click on ``Data Access/Table Of Contents`` and click on the ``.tar.gz``-file to download it. 
 1. After downloading, extract the contents, e.g., run ``tar -xzvf Maritime-Urban-Tracking.tar.gz``. 
-
-### Option 2: Use wget
-1. Download: ``wget https://data.archive.sigma2.no/dataset/6723ebbe-2505-4321-b94d-8a4e482cd6bb/download/Maritime-Urban-Tracking.tar.gz``
-1. Extract: ``tar -xzvf Maritime-Urban-Tracking.tar.gz``
 
 ## Installation
 1. Download the repository. 
