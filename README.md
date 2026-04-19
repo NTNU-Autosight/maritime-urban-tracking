@@ -4,7 +4,8 @@ This repository implements code to use the Maritime Urban Tracking (MUT) dataset
 
 Here is a gif of some of the data from the dataset, made using this library and a recording tool. 
 The red dots are the LiDAR points and the othe colored points are from the short baseline stereo camera. 
-The coordinate frames correspond to the LiDAR and camera frames. 
+The coordinate frames correspond to the LiDAR and camera frames. The x-axis is red, the y-axis is green and the z-axis is blue. 
+
 ![Ferry moving](./illustration/Point%20cloud%20when%20ferry%20moves%20reduced.gif)
 
 Here is a gif where there is a moving target. The big green dots are the estimated GNSS locations. 
@@ -57,6 +58,12 @@ python3 examples/play_all_together.py
 or run the debugger in vscode. 
 
 If you want to use tha dataset, but not in python, you may use the code in this repository as a specification of how to read the files. It would be nice if you then also make that interface available to others and make an issue in this repository so that we can link to it. 
+
+## More documentation
+To read more details about the dataset:
+1. (The most detailed option) read the code and the data files
+1. Read the paper, see below. 
+1. Read more details in [this README.md](documentation/README.md)
 
 ## Citations
 If you find the dataset useful in your research, please cite our paper. We will add a suggestion of how to cite the paper here once it is published. 

@@ -1,0 +1,178 @@
+{
+  "schema_version": "2.1-code-aligned",
+  "covers": [
+    "fields",
+    "meaning",
+    "type",
+    "units",
+    "frame",
+    "required_optional",
+    "valid_values",
+    "joins_and_time"
+  ],
+  "file_types": {
+    ".pos": {
+      "where": "gnss/**/*.pos",
+      "record": "space-delimited line after 24-line header",
+      "time_key": "date + time columns parsed to Unix ns; then apply leap-second compensation in code",
+      "frame": "geodetic WGS84 input; converted to PIREN NED in loader",
+      "example": "2024/07/17 10:21:37.200 63.434228218 10.392120840 34.1855 1 15 0.0053 0.0037 0.0114 0.0020 -0.0013 0.0050 -0.80 3.5",
+      "join": {
+        "key": "nearest Unix timestamp_ns after conversion and leap-second compensation",
+        "to": [".jpg", ".bytes", ".json", "ins.csv"]
+      },
+      "fields": [
+        { "name": "date", "type": "string", "units": "date", "required": true, "valid": "YYYY/MM/DD", "meaning": "GNSS date field" },
+        { "name": "time", "type": "string", "units": "time", "required": true, "valid": "HH:MM:SS.SSS", "meaning": "GNSS time field" },
+        { "name": "latitude(deg)", "type": "float", "units": "deg", "required": true, "valid": "[-90,90]", "meaning": "WGS84 latitude" },
+        { "name": "longitude(deg)", "type": "float", "units": "deg", "required": true, "valid": "[-180,180]", "meaning": "WGS84 longitude" },
+        { "name": "height(m)", "type": "float", "units": "m", "required": true, "valid": "real", "meaning": "ellipsoidal height" },
+        { "name": "Q", "type": "int", "units": "1-6", "required": true, "valid": "1 fix,2 float,3 sbas,4 dgps,5 single,6 ppp", "meaning": "solution quality" },
+        { "name": "ns", "type": "int", "units": "count", "required": true, "valid": "positive", "meaning": "satellite count" },
+        { "name": "sdn(m),sde(m),sdu(m),sdne(m),sdeu(m),sdun(m)", "type": "float", "units": "m", "required": true, "valid": "real", "meaning": "covariance/statistics" },
+        { "name": "age(s)", "type": "float", "units": "s", "required": true, "valid": "real", "meaning": "solution age" },
+        { "name": "ratio", "type": "float", "units": "unitless", "required": true, "valid": "real", "meaning": "ambiguity ratio" }
+      ]
+    },
+    ".csv": {
+      "where": "images/**/*.csv, polarized/parameters/*.csv, lidar_and_ins/**/ins.csv",
+      "record": "comma-separated row for calibration files; tab-separated row for ins.csv",
+      "time_key": null,
+      "frame": "camera frame(s) for calibration files; PIREN NED for ins.csv",
+      "example": "731.89404296875,0,939.1541748046875",
+      "join": {
+        "key": "directory + filename role for calibration files; timestamp_ns nearest-neighbor for ins.csv",
+        "to": [".jpg", ".raw", ".json", ".bytes", ".pos"]
+      },
+      "by_name": {
+        "K_left.csv|K_right.csv|K_l.csv|K_r.csv": {
+          "frame": "left/right camera optical",
+          "fields": [
+            { "name": "K[0,0]=fx", "type": "float", "units": "px", "required": true, "valid": ">0", "meaning": "focal x" },
+            { "name": "K[1,1]=fy", "type": "float", "units": "px", "required": true, "valid": ">0", "meaning": "focal y" },
+            { "name": "K[0,2]=cx", "type": "float", "units": "px", "required": true, "valid": "real", "meaning": "principal x" },
+            { "name": "K[1,2]=cy", "type": "float", "units": "px", "required": true, "valid": "real", "meaning": "principal y" }
+          ]
+        },
+        "D_left.csv|D_right.csv|dist_l.csv|dist_r.csv": {
+          "frame": "camera optical",
+          "fields": [
+            { "name": "k1,k2,p1,p2[,k3]", "type": "float", "units": "unitless", "required": true, "valid": "real", "meaning": "distortion coefficients" }
+          ]
+        },
+        "R.csv": {
+          "frame": "right->left camera",
+          "fields": [
+            { "name": "R(3x3)", "type": "float matrix", "units": "unitless", "required": true, "valid": "orthonormal, det~1", "meaning": "rotation" }
+          ]
+        },
+        "t.csv|T.csv": {
+          "frame": "right->left camera",
+          "fields": [
+            { "name": "tx,ty,tz", "type": "float", "units": "m", "required": true, "valid": "real", "meaning": "translation" }
+          ]
+        },
+        "E.csv": {
+          "frame": "normalized stereo geometry",
+          "fields": [
+            { "name": "E(3x3)", "type": "float matrix", "units": "unitless", "required": true, "valid": "rank~2", "meaning": "essential matrix" }
+          ]
+        },
+        "F.csv": {
+          "frame": "pixel stereo geometry",
+          "fields": [
+            { "name": "F(3x3)", "type": "float matrix", "units": "unitless", "required": true, "valid": "rank~2", "meaning": "fundamental matrix" }
+          ]
+        },
+        "ins.csv": {
+          "frame": "PIREN NED with vessel orientation quaternion",
+          "record": "tab-separated",
+          "fields": [
+            { "name": "timestamp_ns", "type": "int64", "units": "ns", "required": true, "valid": ">0", "meaning": "Unix timestamp" },
+            { "name": "n,e,d", "type": "float", "units": "m", "required": true, "valid": "real", "meaning": "position in PIREN NED" },
+            { "name": "qx,qy,qz,qw", "type": "float", "units": "unitless", "required": true, "valid": "quaternion", "meaning": "orientation quaternion" }
+          ]
+        }
+      }
+    },
+    ".bytes": {
+      "where": "lidar_and_ins/**/*.bytes",
+      "record": "PointCloud2 point (48-byte step)",
+      "time_key": "filename timestamp_ns; per-point t kept as raw uint32 channel",
+      "frame": "lidar_aft/os_sensor",
+      "example": "x=10.234 y=-2.145 z=0.523 intensity=150 t=0 ring=0 range=10545",
+      "join": {
+        "key": "nearest Unix timestamp_ns",
+        "to": [".jpg", ".json", ".pos", "ins.csv"]
+      },
+      "fields": [
+        { "name": "x,y,z", "type": "float32", "units": "m", "required": true, "valid": "real", "meaning": "point coordinates" },
+        { "name": "intensity", "type": "float32", "units": "unitless", "required": true, "valid": ">=0", "meaning": "return intensity" },
+        { "name": "t", "type": "uint32", "units": "sensor-native", "required": true, "valid": "[0,2^32-1]", "meaning": "per-point time channel (raw)" },
+        { "name": "reflectivity", "type": "uint16", "units": "unitless", "required": true, "valid": "[0,65535]", "meaning": "surface reflectivity" },
+        { "name": "ring", "type": "uint16", "units": "index", "required": true, "valid": "[0,31]", "meaning": "laser ring" },
+        { "name": "ambient", "type": "uint16", "units": "unitless", "required": true, "valid": "[0,65535]", "meaning": "ambient light" },
+        { "name": "range", "type": "uint32", "units": "mm", "required": true, "valid": ">=0", "meaning": "range" }
+      ]
+    },
+    ".json": {
+      "where": "polarized/*_images/*.json",
+      "record": "JSON array with two camera objects",
+      "time_key": "mean of the two camera timestamp_ns values",
+      "frame": "polarized_left / polarized_right",
+      "example": {
+        "frame_id": 1,
+        "timestamp_ns": 1721211658000060184,
+        "cam_serial": "220300007",
+        "Gain": 0.0,
+        "ExposureTime": 625.24,
+        "balance_ratio": { "Red": 1.6, "Green": 1.0, "Blue": 2.4 },
+        "incomplete": false
+      },
+      "join": {
+        "key": "filename stem for raw pairing; mean timestamp for cross-sensor nearest-time association",
+        "to": [".raw", ".jpg", ".bytes", ".pos", "ins.csv"]
+      },
+      "fields": [
+        { "name": "[0] and [1] array items", "type": "object", "units": "n/a", "required": true, "valid": "len=2", "meaning": "left/right camera metadata records" },
+        { "name": "frame_id", "type": "int", "units": "index", "required": true, "valid": ">=1", "meaning": "frame number" },
+        { "name": "timestamp_ns", "type": "int64", "units": "ns", "required": true, "valid": ">0", "meaning": "Unix capture time" },
+        { "name": "cam_serial", "type": "string", "units": "id", "required": true, "valid": "non-empty", "meaning": "camera identifier" },
+        { "name": "Gain", "type": "float", "units": "camera units", "required": true, "valid": ">=0", "meaning": "gain setting" },
+        { "name": "ExposureTime", "type": "float", "units": "us", "required": true, "valid": ">0", "meaning": "exposure" },
+        { "name": "balance_ratio.Red/Green/Blue", "type": "float", "units": "unitless", "required": true, "valid": ">0", "meaning": "white balance" },
+        { "name": "incomplete", "type": "bool", "units": "flag", "required": true, "valid": "true|false", "meaning": "frame complete flag" }
+      ]
+    },
+    ".raw": {
+      "where": "polarized/*_images/*.raw",
+      "record": "binary packed 12-bit Bayer payload",
+      "time_key": "from same-stem .json timestamp_ns",
+      "frame": "polarized_left / polarized_right",
+      "example": "000001.raw",
+      "join": {
+        "key": "filename stem (e.g., 000001)",
+        "to": [".json", ".jpg", ".bytes", ".pos"]
+      },
+      "fields": [
+        { "name": "pixel_stream", "type": "binary", "units": "12-bit digital levels (packed as 3 bytes per 2 pixels)", "required": true, "valid": "sensor-native", "meaning": "raw image samples" }
+      ]
+    },
+    ".jpg": {
+      "where": "images/**/*.jpg",
+      "record": "single image file",
+      "time_key": "timestamp_ns in filename",
+      "frame": "left_cam or right_cam",
+      "example": "1721211646279279000_left.jpg",
+      "join": {
+        "key": "timestamp_ns + side(left/right)",
+        "to": [".bytes", ".pos", ".csv", ".json"]
+      },
+      "fields": [
+        { "name": "timestamp_ns", "type": "int64", "units": "ns", "required": true, "valid": ">0", "meaning": "capture time from filename" },
+        { "name": "camera_side", "type": "enum", "units": "left|right", "required": true, "valid": "left,right", "meaning": "stereo side from filename" },
+        { "name": "image_data", "type": "jpeg", "units": "8-bit/channel", "required": true, "valid": "decodable JPEG", "meaning": "compressed RGB image" }
+      ]
+    }
+  }
+}
