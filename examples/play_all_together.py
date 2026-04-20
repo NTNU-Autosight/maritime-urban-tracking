@@ -111,9 +111,10 @@ def play_all_together():
 
     while lidar.is_playable:
         timestamp = lidar.get_timestamp()
-        ins.set_timestamp(timestamp)
+        median_timestamp = lidar.get_median_valid_point_timestamp()
+        ins.set_timestamp(median_timestamp)
         # stereo_camera_right.set_timestamp(timestamp)
-        stereo_camera_left.set_timestamp(timestamp)
+        stereo_camera_left.set_timestamp(median_timestamp)
         if polarized_rig is not None:
             polarized_rig.set_timestamp(timestamp)
 

@@ -58,6 +58,16 @@ class Lidar(TimestampBase):
 
         txyz = np.concatenate((t, xyz), axis=1)
         return txyz
+
+    def get_median_valid_point_timestamp(self):
+        message_bytes = self._get_message_bytes()
+        t = message_bytes[:,20:24].view(dtype=np.uint32).reshape(-1)
+        r = message_bytes[:,32:36].view(dtype=np.uint32).reshape(-1)
+        valid = r > 0
+        if not np.any(valid):
+            return None
+        t_median = int(np.median(t[valid]))
+        return int(self.get_timestamp()) + t_median
     
     def _get_message_bytes(self):
         timestamp = self.get_timestamp()
